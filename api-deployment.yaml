@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-service
+spec:
+  selector:
+    matchLabels:
+      app: api-service
+  replicas: 2  # Example of scaling
+  template:
+    metadata:
+      labels:
+        app: api-service
+    spec:
+      containers:
+      - name: api-service
+        image: your-api-image:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATABASE_HOST
+          value: postgres
+        - name: DATABASE_NAME
+          value: mydatabase
+        - name: DATABASE_USER
+          value: user
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
